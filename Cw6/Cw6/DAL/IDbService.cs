@@ -1,4 +1,5 @@
 ﻿
+using Cw6.DTOs;
 using Cw6.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Cw6.DAL
     {
         IEnumerable<Student> GetStudents();
 
-        Student GetStudent(string studentID); 
+        Student GetStudent(string studentID);
+        bool CheckForCorrectPassword(LoginRequestDto request);
     }
 }

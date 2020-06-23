@@ -1,5 +1,6 @@
 ﻿
 using Cw6.DAL;
+using Cw6.DTOs;
 using Cw6.Models;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,27 @@ namespace Cw6.DAL
                 }
             }
             return null;
+        }
+
+        public bool CheckForCorrectPassword(LoginRequestDto request)
+        {
+            using (var client = new SqlConnection(ConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = client;
+                com.CommandText = " select Student.StPassword From Student " +
+                                  " Where Student.IndexNumber = @index;";
+                com.Parameters.AddWithValue("index", request.Login);
+
+                client.Open();
+                var dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    return (dr["StPassword"].ToString() == request.Haslo);
+
+                }
+                return false;
+            }
         }
     }
 }

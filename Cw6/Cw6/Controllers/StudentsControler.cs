@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Cw6.Controllers
 {
@@ -31,6 +32,7 @@ namespace Cw6.Controllers
 
 
         [HttpGet]
+
         public IActionResult GetStudents()
         {
             IEnumerable<Student> students = dbService.GetStudents();
@@ -52,14 +54,12 @@ namespace Cw6.Controllers
         [HttpPost]
         public IActionResult Login(LoginRequestDto request)
         {
+            if(!dbService.CheckForCorrectPassword(request))
+            {
+                return BadRequest("Hasło nie pasuje do wpisanego loginu");  
+            }
 
-            var claims = new[]
-{
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Name, "jan123"),
-                new Claim(ClaimTypes.Role, "admin"),
-                new Claim(ClaimTypes.Role, "student")
-            };
+            Claim[] claims = SetClaims(request.Login);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -80,5 +80,15 @@ namespace Cw6.Controllers
             });
         }
 
+        private static Claim[] SetClaims(string login)
+        {
+            return new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.Name, login),
+                new Claim(ClaimTypes.Role, "employee"),
+                new Claim(ClaimTypes.Role, "student")
+            };
+        }
     }
 }
