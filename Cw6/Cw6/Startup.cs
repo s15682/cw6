@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace Cw6
 {
@@ -27,6 +28,10 @@ namespace Cw6
         {
             services.AddScoped<IDbService, SqlDbService>();
             services.AddControllers();
+            services.AddSwaggerGen(config => 
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo { Title = "Students App API", Version = "v1" }); 
+            }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +41,12 @@ namespace Cw6
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+               {
+                   config.SwaggerEndpoint("/swagger/v1/swagger.json", "Students App API");
+               });
 
             app.UseRouting();
 
