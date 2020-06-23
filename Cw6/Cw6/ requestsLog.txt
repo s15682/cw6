@@ -1,0 +1,25 @@
+23.06.2020 21:30:19: 
+/api/students
+
+GET
+
+23.06.2020 21:30:24: 
+/api/students
+
+GET
+{
+    "IndexNumber": "s1234",
+    "FirstName": "Andrzej",
+    "LastName": "Malewski",
+    "Studies": "IT"
+}
+23.06.2020 21:32:02: 
+/api/students
+
+GET
+{
+    "IndexNumber": "s1234",
+    "FirstName": "Andrzej",
+    "LastName": "Malewski",
+    "Studies": "IT"
+}
