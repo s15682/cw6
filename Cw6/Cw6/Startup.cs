@@ -67,6 +67,7 @@ namespace Cw6
                });
 
             app.UseMiddleware<LoggingMiddleware>(); 
+            /*
             app.Use(async (context, next) =>
             {
                 if (!context.Request.Headers.ContainsKey("Index"))
@@ -86,7 +87,7 @@ namespace Cw6
                 await context.Response.WriteAsync("Student o takim identyfikatorze nie istnieje");
                 return;
             });
-
+            */
 
             app.UseRouting();
 

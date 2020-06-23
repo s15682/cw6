@@ -14,6 +14,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cw6.Controllers
 {
@@ -32,7 +33,7 @@ namespace Cw6.Controllers
 
 
         [HttpGet]
-
+        [Authorize(Roles = "student")]
         public IActionResult GetStudents()
         {
             IEnumerable<Student> students = dbService.GetStudents();
@@ -82,13 +83,24 @@ namespace Cw6.Controllers
 
         private static Claim[] SetClaims(string login)
         {
-            return new[]
+            if (login == "s0000")
             {
+                return new[]
+                {
                 new Claim(ClaimTypes.NameIdentifier, "1"),
                 new Claim(ClaimTypes.Name, login),
                 new Claim(ClaimTypes.Role, "employee"),
                 new Claim(ClaimTypes.Role, "student")
-            };
+                };
+            } else
+            {
+                return new[]
+                {
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.Name, login),
+                new Claim(ClaimTypes.Role, "student")
+                };
+            }
         }
     }
 }
