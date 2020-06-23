@@ -36,5 +36,28 @@ namespace Cw6.DAL
             }
             return studentList;
         }
+
+        public Student GetStudent(string studentID)
+        {
+            using (var client = new SqlConnection(ConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = client;
+                com.CommandText = " select * "
+                                    + "From Student;";
+
+                client.Open();
+                var dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    return new Student(dr["IndexNumber"].ToString(),
+                                       dr["FirstName"].ToString(),
+                                       dr["LastName"].ToString(),
+                                       (int)dr["IdEnrollment"]
+                                       );
+                }
+            }
+            return null;
+        }
     }
 }

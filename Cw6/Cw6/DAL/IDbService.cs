@@ -11,5 +11,6 @@ namespace Cw6.DAL
     {
         IEnumerable<Student> GetStudents();
 
+        Student GetStudent(string studentID); 
     }
 }
