@@ -43,8 +43,9 @@ namespace Cw6.DAL
             using (var com = new SqlCommand())
             {
                 com.Connection = client;
-                com.CommandText = " select * "
-                                    + "From Student;";
+                com.CommandText = " select * From Student " +
+                                  " Where Student.IndexNumber = @index;";
+                com.Parameters.AddWithValue("index", studentID);
 
                 client.Open();
                 var dr = com.ExecuteReader();

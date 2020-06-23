@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cw6.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,28 @@ namespace Cw6
                {
                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "Students App API");
                });
+
+            app.Use(async (context, next) =>
+            {
+                if (!context.Request.Headers.ContainsKey("Index"))
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await context.Response.WriteAsync("Nie poda³eœ indeksu");
+                    return;
+                }
+
+                string index = context.Request.Headers["Index"].ToString();
+                IDbService dbService = new SqlDbService();
+                if (dbService.GetStudent(index) != null)
+                {
+                    await next();
+                }
+                
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsync("Student o takim identyfikatorze nie istnieje");
+                return;
+            });
+
 
             app.UseRouting();
 
