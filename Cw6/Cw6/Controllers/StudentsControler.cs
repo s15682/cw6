@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Cw6.Handlers;
 
 namespace Cw6.Controllers
 {
@@ -60,47 +61,13 @@ namespace Cw6.Controllers
                 return BadRequest("Hasło nie pasuje do wpisanego loginu");  
             }
 
-            Claim[] claims = SetClaims(request.Login);
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken
-            (
-                issuer: "Gakko",
-                audience: "Students",
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(10),
-                signingCredentials: creds
-            );
-
             return Ok(new
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                refreshToken = Guid.NewGuid()
+                token = JWTCreator.CreateJWT(request.Login, Configuration),
+                refreshToken = RefreshTokenCreator.CreateRefreshToken(dbService, request.Login)
             });
         }
 
-        private static Claim[] SetClaims(string login)
-        {
-            if (login == "s0000")
-            {
-                return new[]
-                {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Name, login),
-                new Claim(ClaimTypes.Role, "employee"),
-                new Claim(ClaimTypes.Role, "student")
-                };
-            } else
-            {
-                return new[]
-                {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-                new Claim(ClaimTypes.Name, login),
-                new Claim(ClaimTypes.Role, "student")
-                };
-            }
-        }
+        
     }
 }

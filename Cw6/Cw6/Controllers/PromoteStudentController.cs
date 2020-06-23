@@ -16,7 +16,6 @@ namespace Cw6.Controllers
         [HttpGet]
         public IActionResult Promote()
         {
-
             return Ok("Promote ok");
         }
     }

@@ -14,5 +14,7 @@ namespace Cw6.DAL
 
         Student GetStudent(string studentID);
         bool CheckForCorrectPassword(LoginRequestDto request);
+        void SaveToken(string login, string v);
+        bool CheckForCorrectRefreshToken(RefreshRequestDto refreshToken);
     }
 }

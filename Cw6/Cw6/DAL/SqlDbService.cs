@@ -82,5 +82,43 @@ namespace Cw6.DAL
                 return false;
             }
         }
+
+        bool IDbService.CheckForCorrectRefreshToken(RefreshRequestDto refreshToken)
+        {
+            using (var client = new SqlConnection(ConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = client;
+                com.CommandText = " select Student.StRefreshToken From Student " +
+                                  " Where Student.IndexNumber = @index;";
+                com.Parameters.AddWithValue("index", refreshToken.Login);
+
+                client.Open();
+                var dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    return (dr["StRefreshToken"].ToString() == refreshToken.Token);
+
+                }
+                return false;
+            }
+        }
+
+        void IDbService.SaveToken(string login, string refreshToken)
+        {
+            using (var client = new SqlConnection(ConString))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = client;
+                com.CommandText = " Update Student " +
+                                  " Set StRefreshToken = @token " +
+                                  " Where Student.IndexNumber = @index;";
+                com.Parameters.AddWithValue("index", login);
+                com.Parameters.AddWithValue("token", refreshToken); 
+
+                client.Open();
+                com.ExecuteNonQuery();
+            }  
+        }
     }
 }

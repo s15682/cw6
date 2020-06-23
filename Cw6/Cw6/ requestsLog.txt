@@ -102,3 +102,66 @@ GET
     "Login" : "s0000",
     "Haslo" : "pass1"
 }
+23.06.2020 23:55:58: 
+/api/students
+
+GET
+
+23.06.2020 23:56:15: 
+/api/students
+
+POST
+{
+    "Login" : "s0000",
+    "Haslo" : "pass1"
+}
+23.06.2020 23:56:53: 
+/api/RefreshToken
+
+POST
+{
+    "Login" : "s0000",
+    "Haslo" : "pass1"
+}
+23.06.2020 23:58:20: 
+/api/students
+
+GET
+
+23.06.2020 23:58:42: 
+/api/students
+
+POST
+{
+    "Login" : "s0000",
+    "Haslo" : "pass1"
+}
+23.06.2020 23:59:24: 
+/api/refreshToken
+
+POST
+{
+    "Login" : "s0000",
+    "Token" : "ca1b21d7-6bb5-476e-9289-bae6a0cc1736"
+}
+24.06.2020 00:00:16: 
+/api/students
+
+GET
+
+24.06.2020 00:00:46: 
+/api/students
+
+POST
+{
+    "Login" : "s0000",
+    "Haslo" : "pass1"
+}
+24.06.2020 00:01:11: 
+/api/refreshToken
+
+POST
+{
+    "Login" : "s0000",
+    "Token" : "b6aa2df1-e197-44b5-b9ff-9c3676d51414"
+}
